@@ -1,0 +1,44 @@
+{
+    "variables": {
+        "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
+        "aws_secret_key": "{{env `AWS_SECRET_KEY`}}",
+        "source_ami": "ami-08c40ec9ead489470"
+    },
+
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "access_key": "{{user `aws_access_key`}}",
+            "secret_key": "{{user `aws_secret_key`}}",
+            "region": "us-east-1",
+            "source_ami": "{{user `source_ami`}}",
+            "instance_type": "t2.micro",
+            "ssh_username": "ubuntu",
+            "ami_name": "packer-image-{{timestamp}}"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "script": "./Packer/setup.sh"
+        },    
+        {
+            "type": "file",
+            "source": "Packer/index.html",
+            "destination": "/tmp/"
+        },
+        {
+            "type": "shell",
+            "inline": "sudo cp /tmp/index.html /var/www/html/"
+        }          
+    ],
+    "post-processors": [
+        [
+            {
+                "output": "manifest.json",
+                "strip_path": true,
+                "type": "manifest"
+            }
+        ]
+    ]
+}

@@ -4,32 +4,32 @@ resource "aws_instance" "bastion-instance" {
 
   subnet_id = var.public_subnet_id #[count.index]   #aws_subnet.public-subnet.id
 
-  vpc_security_group_ids = [var.bastion_sg]#aws_security_group.allow-ssh.id
+  vpc_security_group_ids = [var.bastion_sg] #aws_security_group.allow-ssh.id
 
-  key_name = var.mykeypair #aws_key_pair.mykeypair.key_name
+  key_name = var.key_name #aws_key_pair.key_name.key_name
 
   tags = {
-    "Name" = "bastion-instance"
-    "Project" = "${var.project}"
+    "Name"     = "bastion-instance"
+    "Project"  = "${var.project}"
     "CreateBy" = "${var.CreateBy}"
   }
 }
 
 resource "aws_instance" "private-instance" {
-  count = local.count_instance
+  count         = local.count_instance
   ami           = var.instance-ami # colocar packer ip
   instance_type = "t2.micro"
 
   subnet_id = aws_subnet.private-subnet.id
 
-  vpc_security_group_ids =[var.instance-sg, var.bastion_sg] #[aws_security_group.instance-sg.id,
-                            #aws_security_group.allow-ssh.id]
+  vpc_security_group_ids = [var.instance-sg, var.bastion_sg] #[aws_security_group.instance-sg.id,
+  #aws_security_group.allow-ssh.id]
 
-  key_name = var.mykeypair #aws_key_pair.mykeypair.key_name
-  
+  key_name = var.key_name #aws_key_pair.key_name.key_name
+
   tags = {
-    "Name" = "nginx-instance"
-    "Project" = "${var.project}"
+    "Name"     = "nginx-instance"
+    "Project"  = "${var.project}"
     "CreateBy" = "${var.CreateBy}"
   }
 }

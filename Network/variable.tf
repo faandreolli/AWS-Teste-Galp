@@ -1,19 +1,19 @@
-variable region {
-    default="eu-east-1"
+variable "region" {
+  default = "eu-east-1"
 }
 
 variable "project" {
-  type = string
+  type    = string
   default = "Galp"
 }
 
 variable "CreateBy" {
-  type = string
+  type    = string
   default = "Terraform"
 }
 
 variable "ubuntu-ami" {
-  type= string
+  type    = string
   default = "ami-08c40ec9ead489470"
 }
 

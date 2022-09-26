@@ -1,0 +1,8 @@
+#directory
+
+**/.terraform/
+
+#file extensions
+*.tfstate*
+*.lock
+*.tfvars

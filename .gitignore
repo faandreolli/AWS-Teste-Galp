@@ -8,3 +8,6 @@
 *.lock
 *.tfvars
 *.hcl
+*.pem
+
+manifest.json

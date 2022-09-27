@@ -20,11 +20,11 @@
     "provisioners": [
         {
             "type": "shell",
-            "script": "./Packer/setup.sh"
+            "script": "./Golden_Image/setup.sh"
         },    
         {
             "type": "file",
-            "source": "Packer/index.html",
+            "source": "Golden_Image/index.html",
             "destination": "/tmp/"
         },
         {

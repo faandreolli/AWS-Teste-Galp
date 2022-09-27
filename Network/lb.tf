@@ -1,28 +1,39 @@
+data "aws_subnets" "subnets" {
+  filter {
+    name   = "vpc-id"
+    values = [aws_vpc.vpc.id]
+  }
+
+  depends_on = [
+    aws_vpc.vpc,
+    aws_subnet.private-subnet,
+    aws_subnet.public-subnet
+  ]
+}
+
 resource "aws_lb" "lb" {
   name               = var.aws_lb_name
   internal           = false
   load_balancer_type = var.load_balancer_type
-  security_groups    = [var.bastion_lb_sg, var.instance-lb-sg]
-  subnets            = [aws_subnet.private-subnet.*.id, aws_subnet.public-subnet.*.id]
+  security_groups    = [aws_security_group.public-sg.id, aws_security_group.bastion-sg.id, aws_security_group.instance-sg.id]
+  subnets            =  data.aws_subnets.subnets.ids
+ 
   idle_timeout       = 400
   tags = {
     "Name"     = "LoadBalancer"
     "Project"  = "${var.project}"
     "CreateBy" = "${var.CreateBy}"
   }
+
+ 
+
 }
 
 resource "aws_lb_target_group" "lb_tg" {
   name     = "galp-teste"
   port     = 80
-  protocol = "http"
-  vpc_id   = aws_vpc.vpc
-
-  # lifecycle {
-  #   ignore_changes = [name] # This will not let change the target group with
-  #   # new uuid number and structure will remain intact.
-  #   create_before_destroy = true
-  # }
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.vpc.id
 
   health_check {
 

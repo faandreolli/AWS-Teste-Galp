@@ -1,12 +1,12 @@
-output "instanceBastion" { # for referecing to the root/output file
+output "instanceBastion" { 
 
-  value     = aws_instance.bastion-instance[*] # output everything
+  value     = aws_instance.bastion-instance[*] 
   sensitive = true
 }
 
-output "instancePrivate" { # for referecing to the root/output file
+output "instancePrivate" { 
 
-  value     = aws_instance.private-instance[*] # output everything
+  value     = aws_instance.private-instance[*] 
   sensitive = true
 }
 
@@ -14,3 +14,4 @@ output "instancePrivate" { # for referecing to the root/output file
 output "instance_port" {
   value = aws_lb_target_group_attachment.mtc_target_attach[0].port
 }
+

@@ -20,15 +20,29 @@ variable "ubuntu-ami" {
 variable "public_subnet_id" {
   type = string
 }
+variable "private_subnet_id" {
+  type = list(any)
+}
 
 variable "bastion_sg" {
   type = string
 }
 
 variable "instance-sg" {
+ type = string
+}
+variable "instance-ami" {
   type = string
 }
 
-variable "mykeypair" {
+variable "lb_target_group_arn" {
+  type = string
+}
+
+variable "instance_count" {
+  type = number
+}
+
+variable "key_name" {
   type = string
 }

@@ -23,9 +23,16 @@ resource "aws_route_table" "private-rt" {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.nat_gw.id
   }
+
+    tags = {
+    "Name"     = "private_route_table"
+    "Project"  = "${var.project}"
+    "CreateBy" = "${var.CreateBy}"
+  }
 }
 
 resource "aws_route_table_association" "private-rta" {
-  subnet_id      = aws_subnet.private-subnet.id
+  count = var.public_sn_count
+  subnet_id      = aws_subnet.private-subnet[count.index].id
   route_table_id = aws_route_table.private-rt.id
 }

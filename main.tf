@@ -5,11 +5,11 @@ module "network" {
   #   private_cidrs =["10.123.1.0/24","10.123.3.0/24","10.123.5.0/24"]
   #security_groups  = local.security_groups
   #access_ip        = var.access_ip
-  max_subnets      = local.max_subnets
-  private_sn_count = local.private_sn_count
-  public_sn_count  = local.public_sn_count
-  public_cidrs     = [for i in range(2, 255, 2) : cidrsubnet(local.vpc_cidr, 8, i)]
-  private_cidrs    = [for i in range(1, 255, 2) : cidrsubnet(local.vpc_cidr, 8, i)]
+  max_subnets         = local.max_subnets
+  private_sn_count    = local.private_sn_count
+  public_sn_count     = local.public_sn_count
+  public_Network_CID  = [for i in range(2, 255, 2) : cidrsubnet(local.vpc_cidr, 8, i)]
+  private_Network_CID = [for i in range(1, 255, 2) : cidrsubnet(local.vpc_cidr, 8, i)]
   #db_subnet_group  = true #for condition of creating db security groups
   #bastion_lb_sg          = module.networking.public_subnet_group
   #instance-lb-sg         = module.network.
@@ -22,17 +22,18 @@ module "network" {
   #lb_unhealthy_threshold = var.unhealthy_threshold
   #lb_interval            = var.interval
   #lb_timeout             = var.timeout
-  vpc_id = module.networking.vpc_id
+  #vpc_id = module.networking.vpc_id
 }
 
 module "instance" {
-  source        = "./Instance"
-  instance_type = "t2.micro"
-  ubuntu-ami    = var.ubuntu-ami
-  instance-ami  = local.ami-id
+  source       = "./Instance"
+  ubuntu-ami   = var.ubuntu-ami
+  instance-ami = local.ami-id
   #vol_size            = 10
-  bastion_sg       = module.network.bastion-sg
-  public_subnet_id = module.network.bastion_subnet_group
+  bastion_sg        = module.network.bastion-sg
+  instance-sg       = module.network.instance-sg
+  public_subnet_id  = module.network.bastion_subnet_group[0]
+  private_subnet_id = module.network.private_subnet_group
   instance_count   = local.private_sn_count
   #public_key_path     = "/home/ubuntu/.ssh/keymtc.pub"
   key_name = aws_key_pair.mykeypair.key_name

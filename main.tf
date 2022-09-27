@@ -22,3 +22,17 @@ module "instance" {
   key_name = aws_key_pair.mykeypair.key_name
   lb_target_group_arn = module.network.aws_lb_target_group_arn
 }
+
+resource "null_resource" "health_check" {
+
+ provisioner "local-exec" {
+    
+    command = "Remove-item manifest.json"
+    interpreter = ["PowerShell", "-Command"]
+  }
+
+  depends_on = [
+    module.instance,
+    module.network
+  ]
+}

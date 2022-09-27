@@ -17,10 +17,6 @@ variable "ubuntu-ami" {
   default = "ami-08c40ec9ead489470"
 }
 
-#variable "instance_count" {
-#  type = number
-#}
-
 variable "cidr_block" {
   type = string
 }
@@ -45,8 +41,6 @@ variable "max_subnets" {
   type = number
 }
 
-#variable "security_groups" {}
-
 variable "aws_lb_name" {
   type = string
 }
@@ -54,25 +48,3 @@ variable "aws_lb_name" {
 variable "load_balancer_type" {
   type = string
 }
-
-#variable "bastion_lb_sg" {
-#  type = string
-#}
-
-#variable "instance-lb-sg" {
-#  type = string
-#}
-
-#variable "lb_subnets" {}
-
-#variable "tg_port" {
-#  type = number
-#}
-#
-#variable "tg_protocol" {
-#  type = string
-#}
-
-#variable "vpc_id" {
-#  type = string
-#}
